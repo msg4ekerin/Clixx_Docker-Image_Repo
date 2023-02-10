@@ -10,7 +10,7 @@ pipeline {
         stage ('Sonarcube Scan') {
         steps {
          script {
-          scannerHome = tool 'Sonar-inst'
+          scannerHome = tool 'sonarqube'
         }
         withCredentials([string(credentialsId: 'SONAR_TOKEN', variable: 'SONAR_TOKEN')]){
         withSonarQubeEnv('SonarQubeScanner') {
@@ -35,7 +35,7 @@ pipeline {
 }
 
 def getSonarPath(){
-        def SonarHome= tool name: 'Sonar-inst', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
-        // tool name: 'Sonar-inst', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
+        def SonarHome= tool name: 'sonarqube', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
+        
         return SonarHome
     }
