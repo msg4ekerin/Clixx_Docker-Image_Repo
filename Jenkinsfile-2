@@ -37,8 +37,7 @@ pipeline {
             //  dockerHome= tool 'docker-inst'
             // }
             //  sh "${dockerHome}/bin/docker build . -t clixx-image:$VERSION "
-            // sh "docker build . -t clixx-image:$VERSION "
-                sh 'mvn --version'
+            sh "docker build . -t clixx-image:$VERSION "
           }
         }
 
