@@ -64,7 +64,6 @@ pipeline {
             python3 -m pip install --upgrade pip
             python3 --version
             pip3 install boto3 botocore boto ansible
-            usr/bin/ansible-playbook $WORKSPACE/deploy_db_ansible/deploy_db.yml
             deactivate
 
               '''
