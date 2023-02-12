@@ -59,8 +59,11 @@ pipeline {
   stage ('Restore CliXX Database') {
           steps {
               sh '''
-          
-            
+            python3 -m venv python3-virtualenv
+            source python3-virtualenv/bin/activate
+            python3 -m pip install --upgrade pip
+            python3 --version
+            pip3 install boto3 botocore boto 
             /usr/bin/ansible-playbook $WORKSPACE/deploy_db_ansible/deploy_db.yml
             deactivate
 
@@ -90,7 +93,10 @@ pipeline {
                 def userInput = input(id: 'confirm', message: 'Tear Down Environment?', parameters: [ [$class: 'BooleanParameterDefinition', defaultValue: false, description: 'Tear Down Environment?', name: 'confirm'] ])
              }
               sh '''
-            
+            python3 -m venv python3-virtualenv
+            source python3-virtualenv/bin/activate
+            python3 --version
+            pip3 install boto3 botocore boto 
             /usr/bin/ansible-playbook $WORKSPACE/deploy_db_ansible/delete_db.yml
             deactivate
             docker stop clixx-cont
