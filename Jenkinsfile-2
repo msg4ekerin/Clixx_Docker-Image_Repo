@@ -64,7 +64,7 @@ pipeline {
             python3 -m pip install --upgrade pip
             python3 --version
             pip3 install boto3 botocore boto 
-            /usr/bin/ansible-playbook $WORKSPACE/deploy_db_ansible/deploy_db.yml
+            ansible-playbook $WORKSPACE/deploy_db_ansible/deploy_db.yml
             deactivate
 
               '''
@@ -97,7 +97,7 @@ pipeline {
             source python3-virtualenv/bin/activate
             python3 --version
             pip3 install boto3 botocore boto 
-            /usr/bin/ansible-playbook $WORKSPACE/deploy_db_ansible/delete_db.yml
+            ansible-playbook $WORKSPACE/deploy_db_ansible/delete_db.yml
             deactivate
             docker stop clixx-cont
             docker rm  clixx-cont
