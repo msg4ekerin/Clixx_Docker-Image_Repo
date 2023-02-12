@@ -4,7 +4,7 @@
     connection: local
     vars:
       instance_id: wordpressdbclixxjenkins
-      db_snapshot: shareddatabase-snapshot
+      db_snapshot: clixxshared
       security_group: sg-04cd1f53f6d16174c
     tasks:
        - name: Restore DB from snapshot
