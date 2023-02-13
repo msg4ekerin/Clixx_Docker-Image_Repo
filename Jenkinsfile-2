@@ -64,7 +64,7 @@ pipeline {
             python3 -m pip install --upgrade pip
             python3 --version
             pip3 install boto3 botocore boto ansible
-            /usr/bin/ansible-playbook $WORKSPACE/deploy_db_ansible/deploy_db.yml
+
             deactivate
 
               '''
@@ -81,7 +81,7 @@ pipeline {
                SERVER_INSTANCE='wordpressdbclixxjenkins.cd7numzl1xfe.us-east-1.rds.amazonaws.com'
                echo "use wordpressdb;" >> $WORKSPACE/db.setup
                echo "UPDATE wp_options SET option_value = '$SERVER_IP' WHERE option_value LIKE 'http%';">> $WORKSPACE/db.setup
-               mysql -u $USERNAME --password=$PASSWORD -h $SERVER_INSTANCE  -D  $DBNAME < $WORKSPACE/db.setup
+
 
               '''
           }
@@ -98,7 +98,7 @@ pipeline {
             python3 -m pip install --upgrade pip
             python3 --version
             pip3 install boto3 botocore boto ansible
-            /usr/bin/ansible-playbook $WORKSPACE/deploy_db_ansible/delete_db.yml
+
             deactivate
             docker stop clixx-cont
             docker rm  clixx-cont
