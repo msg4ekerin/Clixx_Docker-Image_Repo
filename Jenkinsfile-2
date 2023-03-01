@@ -9,6 +9,8 @@ pipeline {
     stages {
         stage ('Sonarcube Scan') {
         steps {
+           slackSend (color: '#001aff', message: "Sonarcube Scan: ADEWALE '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+            // script{
          script {
           scannerHome = tool 'Sonar-inst'
         }
