@@ -7,132 +7,35 @@ pipeline {
     }
 
     stages {
-//         stage ('Sonarcube Scan') {
-//         steps {
-//            slackSend (color: '#001aff', message: "Sonarcube Scan: ADEWALE '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
-//             // script{
-//          script {
-//           scannerHome = tool 'Sonar-inst'
-//         }
-//         withCredentials([string(credentialsId: 'SONAR_TOKEN', variable: 'SONAR_TOKEN')]){
-//         withSonarQubeEnv('SonarQubeScanner') {
-//           sh " ${scannerHome}/bin/sonar-scanner \
-//           -Dsonar.projectKey=CLixx-App-Adewale \
-//           -Dsonar.login=${SONAR_TOKEN} "
-//         }
-//         }
-//         }
-
-// }
-
-//  stage('Quality Gate') {
-//             steps {
-//                 timeout(time: 3, unit: 'MINUTES') {
-//                     waitForQualityGate abortPipeline: true
-//             }
-//             }
-//         }
-
-        //   stage ('Build Docker Image') {
-        //   steps {
-        //     slackSend (color: '#001aff', message: "Build Docker Image: ADEWALE '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
-        //     // script{
-        //     //  dockerHome= tool 'docker-inst'
-        //     // }
-        //     //  sh "${dockerHome}/bin/docker build . -t clixx-image:$VERSION "
-        //     sh "docker build . -t clixx-image:$VERSION "
-        //   }
-        // }
-
-  // stage ('Starting Docker Image') {
-  //         steps {
-  //            slackSend (color: '#001aff', message: "Starting Docker Image: ADEWALE '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
-  //             sh '''
-  //             if ( docker ps|grep clixx-cont ) then
-  //                echo "Docker image exists, killing it"
-  //                docker stop clixx-cont
-  //                docker rm clixx-cont
-  //                docker run --name clixx-cont  -p 80:80 -d clixx-image:$VERSION
-  //             else
-  //                docker run --name clixx-cont  -p 80:80 -d clixx-image:$VERSION 
-  //             fi
-  //             '''
-  //         }
-  //       }
-
-  // stage ('Restore CliXX Database') {
-  //         steps {
-  //           slackSend (color: '#001aff', message: "Restore CliXX Database: ADEWALE '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
-  //             sh '''
-  //           python3 -m venv python3-virtualenv
-  //           source python3-virtualenv/bin/activate
-  //           python3 -m pip install --upgrade pip
-  //           python3 --version
-  //           pip3 install boto3 botocore boto ansible
-  //           ansible-playbook $WORKSPACE/deploy_db_ansible/deploy_db.yml
-  //           deactivate
-
-  //             '''
-  //         }
-  //       }
-
-  // stage ('Configure DB Instance') {
-  //         steps {
-  //           slackSend (color: '#001aff', message: "Configure DB Instance: ADEWALE '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
-  //             sh '''
-  //              USERNAME='wordpressuser'
-  //              PASSWORD='W3lcome123'
-  //              DBNAME='wordpressdb'
-  //              SERVER_IP=$(curl -s http://checkip.dyndns.org | sed -e 's/.*Current IP Address: //' -e 's/<.*$//')
-  //              SERVER_INSTANCE='wordpressdbclixxjenkins.cyymdyvt5b4v.us-east-1.rds.amazonaws.com'
-  //              echo "use wordpressdb;" >> $WORKSPACE/db.setup
-  //              echo "UPDATE wp_options SET option_value = '$SERVER_IP' WHERE option_value LIKE 'http%';">> $WORKSPACE/db.setup
-  //              mysql -u $USERNAME --password=$PASSWORD -h $SERVER_INSTANCE  -D  $DBNAME < $WORKSPACE/db.setup
-
-  //             '''
-  //         }
-  //       }
-
-      // stage ('Tear Down CliXX Docker Image and Database') {
-      //     steps {
-      //       slackSend (color: '#001aff', message: "Tear Down CliXX Docker Image and Database: ADEWALE '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
-      //        script {
-      //           def userInput = input(id: 'confirm', message: 'Tear Down Environment?', parameters: [ [$class: 'BooleanParameterDefinition', defaultValue: false, description: 'Tear Down Environment?', name: 'confirm'] ])
-      //        }
-      //         sh '''
-      //       python3 -m venv python3-virtualenv
-      //       source python3-virtualenv/bin/activate
-      //       python3 -m pip install --upgrade pip
-      //       python3 --version
-      //       pip3 install boto3 botocore boto ansible
-      //       ansible-playbook $WORKSPACE/deploy_db_ansible/delete_db.yml
-      //       deactivate
-      //       docker stop clixx-cont
-      //       docker rm  clixx-cont
-
-      //         '''
-      //     }
-      //   }
-
-        stage('Configure WP CONFIG FILE') {
+        stage ('Sonarcube Scan') {
         steps {
-            script {
-                def userInput = input(id: 'confirm', message: 'CONFIGURE WP-CONFIG.PHP ?', parameters: [ [$class: 'BooleanParameterDefinition', defaultValue: false, description: 'CONFIGURE WP-CONFIG.PHP?', name: 'confirm'] ])
-             }
-            slackSend (color: '#797c82', message: "KINDLY CONFIRM TO CONFIGURE WP-CONFIG.PHP FILE FOR DEV ENV: - ${EXECUTOR} '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
-                sh '''
-                SERVER_INSTANCE='wordpressdbclixxjenkins.cyymdyvt5b4v.us-east-1.rds.amazonaws.com'
-                DEV_RDS="wordpressdbclixxjenkins.ckozzkyslngq.us-east-1.rds.amazonaws.com"
-                sed -i "s/'$SERVER_INSTANCE'/'$DEV_RDS'/g" wp-config.php
-                '''
-            
+           slackSend (color: '#001aff', message: "Sonarcube Scan: ADEWALE '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+            // script{
+         script {
+          scannerHome = tool 'Sonar-inst'
         }
-    }
+        withCredentials([string(credentialsId: 'SONAR_TOKEN', variable: 'SONAR_TOKEN')]){
+        withSonarQubeEnv('SonarQubeScanner') {
+          sh " ${scannerHome}/bin/sonar-scanner \
+          -Dsonar.projectKey=CLixx-App-Adewale \
+          -Dsonar.login=${SONAR_TOKEN} "
+        }
+        }
+        }
 
+}
 
-          stage ('Build Docker Image For Dev Env') {
+ stage('Quality Gate') {
+            steps {
+                timeout(time: 3, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+            }
+            }
+        }
+
+          stage ('Build Docker Image') {
           steps {
-            slackSend (color: '#001aff', message: "Build Docker Image For Dev Env: ADEWALE '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+            slackSend (color: '#001aff', message: "Build Docker Image: ADEWALE '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
             // script{
             //  dockerHome= tool 'docker-inst'
             // }
@@ -141,9 +44,9 @@ pipeline {
           }
         }
 
-  stage ('Starting Docker Image For Dev Env') {
+  stage ('Starting Docker Image') {
           steps {
-             slackSend (color: '#001aff', message: "Starting Docker Image For Dev Env: ADEWALE '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+             slackSend (color: '#001aff', message: "Starting Docker Image: ADEWALE '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
               sh '''
               if ( docker ps|grep clixx-cont ) then
                  echo "Docker image exists, killing it"
@@ -157,11 +60,9 @@ pipeline {
           }
         }
 
-
-
-  stage ('Restore CliXX Database For Dev Env') {
+  stage ('Restore CliXX Database') {
           steps {
-            slackSend (color: '#001aff', message: "Restore CliXX Database For Dev Env: ADEWALE '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+            slackSend (color: '#001aff', message: "Restore CliXX Database: ADEWALE '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
               sh '''
             python3 -m venv python3-virtualenv
             source python3-virtualenv/bin/activate
@@ -175,9 +76,9 @@ pipeline {
           }
         }
 
-  stage ('Configure DB Instance For Dev Env') {
+  stage ('Configure DB Instance') {
           steps {
-            slackSend (color: '#001aff', message: "Configure DB Instance For Dev Env: ADEWALE '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+            slackSend (color: '#001aff', message: "Configure DB Instance: ADEWALE '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
               sh '''
                USERNAME='wordpressuser'
                PASSWORD='W3lcome123'
@@ -192,14 +93,11 @@ pipeline {
           }
         }
 
-
-
-
-      stage ('Tear Down CliXX Docker Image and  Dev Database') {
+      stage ('Tear Down CliXX Docker Image and Database') {
           steps {
-            slackSend (color: '#001aff', message: "Tear Down CliXX Docker Image and Dev Database: ADEWALE '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+            slackSend (color: '#001aff', message: "Tear Down CliXX Docker Image and Database: ADEWALE '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
              script {
-                def userInput = input(id: 'confirm', message: 'Tear Down Dev Environment?', parameters: [ [$class: 'BooleanParameterDefinition', defaultValue: false, description: 'Tear Down Dev Environment?', name: 'confirm'] ])
+                def userInput = input(id: 'confirm', message: 'Tear Down Environment?', parameters: [ [$class: 'BooleanParameterDefinition', defaultValue: false, description: 'Tear Down Environment?', name: 'confirm'] ])
              }
               sh '''
             python3 -m venv python3-virtualenv
@@ -215,6 +113,108 @@ pipeline {
               '''
           }
         }
+
+    //     stage('Configure WP CONFIG FILE') {
+    //     steps {
+    //         script {
+    //             def userInput = input(id: 'confirm', message: 'CONFIGURE WP-CONFIG.PHP ?', parameters: [ [$class: 'BooleanParameterDefinition', defaultValue: false, description: 'CONFIGURE WP-CONFIG.PHP?', name: 'confirm'] ])
+    //          }
+    //         slackSend (color: '#797c82', message: "KINDLY CONFIRM TO CONFIGURE WP-CONFIG.PHP FILE FOR DEV ENV: - ${EXECUTOR} '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+    //             sh '''
+    //             SERVER_INSTANCE='wordpressdbclixxjenkins.cyymdyvt5b4v.us-east-1.rds.amazonaws.com'
+    //             DEV_RDS="wordpressdbclixxjenkins.ckozzkyslngq.us-east-1.rds.amazonaws.com"
+    //             sed -i "s/'$SERVER_INSTANCE'/'$DEV_RDS'/g" wp-config.php
+    //             '''
+            
+    //     }
+    // }
+
+
+    //       stage ('Build Docker Image For Dev Env') {
+    //       steps {
+    //         slackSend (color: '#001aff', message: "Build Docker Image For Dev Env: ADEWALE '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+    //         // script{
+    //         //  dockerHome= tool 'docker-inst'
+    //         // }
+    //         //  sh "${dockerHome}/bin/docker build . -t clixx-image:$VERSION "
+    //         sh "docker build . -t clixx-image:$VERSION "
+    //       }
+    //     }
+
+  // stage ('Starting Docker Image For Dev Env') {
+  //         steps {
+  //            slackSend (color: '#001aff', message: "Starting Docker Image For Dev Env: ADEWALE '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+  //             sh '''
+  //             if ( docker ps|grep clixx-cont ) then
+  //                echo "Docker image exists, killing it"
+  //                docker stop clixx-cont
+  //                docker rm clixx-cont
+  //                docker run --name clixx-cont  -p 80:80 -d clixx-image:$VERSION
+  //             else
+  //                docker run --name clixx-cont  -p 80:80 -d clixx-image:$VERSION 
+  //             fi
+  //             '''
+  //         }
+  //       }
+
+
+
+  // stage ('Restore CliXX Database For Dev Env') {
+  //         steps {
+  //           slackSend (color: '#001aff', message: "Restore CliXX Database For Dev Env: ADEWALE '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+  //             sh '''
+  //           python3 -m venv python3-virtualenv
+  //           source python3-virtualenv/bin/activate
+  //           python3 -m pip install --upgrade pip
+  //           python3 --version
+  //           pip3 install boto3 botocore boto ansible
+  //           ansible-playbook $WORKSPACE/deploy_db_ansible/deploy_db.yml
+  //           deactivate
+
+  //             '''
+  //         }
+  //       }
+
+  // stage ('Configure DB Instance For Dev Env') {
+  //         steps {
+  //           slackSend (color: '#001aff', message: "Configure DB Instance For Dev Env: ADEWALE '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+  //             sh '''
+  //              USERNAME='wordpressuser'
+  //              PASSWORD='W3lcome123'
+  //              DBNAME='wordpressdb'
+  //              SERVER_IP=$(curl -s http://checkip.dyndns.org | sed -e 's/.*Current IP Address: //' -e 's/<.*$//')
+  //              SERVER_INSTANCE='wordpressdbclixxjenkins.ckozzkyslngq.us-east-1.rds.amazonaws.com'
+  //              echo "use wordpressdb;" >> $WORKSPACE/db.setup
+  //              echo "UPDATE wp_options SET option_value = '$SERVER_IP' WHERE option_value LIKE 'http%';">> $WORKSPACE/db.setup
+  //              mysql -u $USERNAME --password=$PASSWORD -h $SERVER_INSTANCE  -D  $DBNAME < $WORKSPACE/db.setup
+
+  //             '''
+  //         }
+  //       }
+
+
+
+
+      // stage ('Tear Down CliXX Docker Image and  Dev Database') {
+      //     steps {
+      //       slackSend (color: '#001aff', message: "Tear Down CliXX Docker Image and Dev Database: ADEWALE '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+      //        script {
+      //           def userInput = input(id: 'confirm', message: 'Tear Down Dev Environment?', parameters: [ [$class: 'BooleanParameterDefinition', defaultValue: false, description: 'Tear Down Dev Environment?', name: 'confirm'] ])
+      //        }
+      //         sh '''
+      //       python3 -m venv python3-virtualenv
+      //       source python3-virtualenv/bin/activate
+      //       python3 -m pip install --upgrade pip
+      //       python3 --version
+      //       pip3 install boto3 botocore boto ansible
+      //       ansible-playbook $WORKSPACE/deploy_db_ansible/delete_db.yml
+      //       deactivate
+      //       docker stop clixx-cont
+      //       docker rm  clixx-cont
+
+      //         '''
+      //     }
+      //   }
 
 
 
