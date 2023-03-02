@@ -5,7 +5,7 @@
     vars:
       instance_id: wordpressdbclixxjenkins
       db_snapshot: clixxshred
-      security_group: sg-026e140fcded1bc68
+      security_group: sg-0da0edb18c011d5a9
     tasks:
        - name: Restore DB from snapshot
          local_action:
